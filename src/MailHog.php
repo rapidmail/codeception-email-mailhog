@@ -434,17 +434,19 @@ class MailHog extends Module
    */
   protected function getDecodedEmailProperty($email, $property) {
     if ((string)$property != '') {
-      if (!empty($email->Content->Headers->{'Content-Transfer-Encoding'}) &&
-        in_array('quoted-printable', $email->Content->Headers->{'Content-Transfer-Encoding'})
+      // Access headers properly when mime part is passed as $email
+      $headers = !empty($email->Headers) ? $email->Headers : $email->Content->Headers;
+      if (!empty($headers->{'Content-Transfer-Encoding'}) &&
+        in_array('quoted-printable', $headers->{'Content-Transfer-Encoding'})
       ) {
         $property = quoted_printable_decode($property);
       }
-      if (!empty($email->Content->Headers->{'Content-Type'}[0]) &&
-          strpos($email->Content->Headers->{'Content-Type'}[0], 'multipart/mixed') !== false
+      if (!empty($headers->{'Content-Type'}[0]) &&
+          strpos($headers->{'Content-Type'}[0], 'multipart/mixed') !== false
       ) {
           $property = quoted_printable_decode($property);
       }
-      if (strpos($property, '=?utf-8?Q?') !== false && extension_loaded('mbstring')) {
+      if (stripos($property, '=?utf-8?Q?') !== false && extension_loaded('mbstring')) {
         $property = mb_decode_mimeheader($property);
       }
     }
