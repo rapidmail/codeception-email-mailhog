@@ -67,6 +67,14 @@ class MailHog extends Module
    */
   protected $requiredFields = array('url', 'port');
 
+  /**
+   * @return string
+   */
+  public function grabRawMessage()
+  {
+    return empty($this->openedEmail->Raw->Data) ? '' : $this->openedEmail->Raw->Data;
+  }
+
   public function _initialize()
   {
     $url = trim($this->config['url'], '/') . ':' . $this->config['port'];
