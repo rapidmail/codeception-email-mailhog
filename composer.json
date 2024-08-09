@@ -9,6 +9,7 @@
         }
     ],
     "require": {
+        "codeception/codeception": "^5.0",
         "ericmartel/codeception-email": "^1.0",
         "guzzlehttp/guzzle": "^6.1 || ^7.0"
     },

@@ -58,14 +58,14 @@ class MailHog extends Module
    *
    * @var array
    */
-  protected $config = array('url', 'port', 'guzzleRequestOptions', 'deleteEmailsAfterScenario', 'timeout');
+  protected array $config = array('url', 'port', 'guzzleRequestOptions', 'deleteEmailsAfterScenario', 'timeout');
 
   /**
    * Codeception required variables
    *
    * @var array
    */
-  protected $requiredFields = array('url', 'port');
+  protected array $requiredFields = array('url', 'port');
 
   /**
    * @return string
@@ -94,7 +94,7 @@ class MailHog extends Module
   /**
    * Method executed after each scenario
    */
-  public function _after(\Codeception\TestCase $test)
+  public function _after(\Codeception\TestInterface $test)
   {
     if(isset($this->config['deleteEmailsAfterScenario']) && $this->config['deleteEmailsAfterScenario'])
     {
@@ -113,7 +113,7 @@ class MailHog extends Module
     {
       $this->mailhog->request('DELETE', '/api/v1/messages');
     }
-    catch(Exception $e)
+    catch(\Exception $e)
     {
       $this->fail('Exception: ' . $e->getMessage());
     }
@@ -133,7 +133,7 @@ class MailHog extends Module
       $response = $this->mailhog->request('GET', '/api/v1/messages');
       $this->fetchedEmails = json_decode($response->getBody());
     }
-    catch(Exception $e)
+    catch(\Exception $e)
     {
       $this->fail('Exception: ' . $e->getMessage());
     }
@@ -288,7 +288,7 @@ class MailHog extends Module
     {
       $response = $this->mailhog->request('GET', "/api/v1/messages/{$id}");
     }
-    catch(Exception $e)
+    catch(\Exception $e)
     {
       $this->fail('Exception: ' . $e->getMessage());
     }
